@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fekete Ádám - Szakmai Portfólió</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-bg: #111827;
+            --sidebar-text: #9ca3af;
+            --sidebar-hover: #374151;
+            --accent: #6366f1;
+            --main-bg: #0f172a;
+            --resume-card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* --- OLDALSÁV (SIDEBAR) --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease-in-out;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            padding: 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .brand-logo img {
+            width: 130%; 
+            height: 130%;
+            object-fit: contain;
+            transform: translate(-2%, 5%); 
+            image-rendering: -webkit-optimize-contrast;
+            display: block;
+        }
+
+        .brand-text h1 { font-size: 16px; font-weight: 600; }
+        .brand-text span { font-size: 12px; color: var(--sidebar-text); text-transform: uppercase; }
+
+        .nav-scroller { flex: 1; overflow-y: auto; padding: 20px 15px; }
+        .nav-group { margin-bottom: 25px; }
+        .nav-label { font-size: 11px; text-transform: uppercase; color: #6b7280; margin-bottom: 10px; padding-left: 10px; font-weight: 600; letter-spacing: 1px; }
+
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--sidebar-hover); color: #fff; }
+
+        /* --- FŐ TARTALOM --- */
+        .main-content {
+            flex: 1;
+            height: 100vh;
+            display: flex;
+            align-items: center; /* Függőleges középre igazítás */
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .resume-container {
+            max-width: 1000px;
+            width: 100%;
+            background: var(--resume-card-bg);
+            /* MÓDOSÍTOTT MAGASSÁG: Kicsit nagyobb, de nem lóg le */
+            padding: 50px 60px; 
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            text-align: left;
+            border: 1px solid var(--border-color);
+            max-height: 90vh; 
+            overflow-y: auto; /* Ha nagyon kicsi a képernyő, a kártyán belül lehessen görgetni */
+        }
+
+        .resume-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            gap: 30px;
+        }
+
+        .header-info h2 { font-size: 2.8rem; color: var(--text-light); line-height: 1.2; }
+        .header-info p { color: var(--accent); font-size: 1.1rem; font-weight: 500; margin-top: 8px; }
+
+        .profile-pic {
+            width: 140px;
+            height: 140px;
+            background: var(--sidebar-hover);
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid var(--accent);
+        }
+
+        .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
+
+        .resume-section { margin-bottom: 35px; }
+        .resume-section h3 { 
+            font-size: 1rem; 
+            text-transform: uppercase; 
+            color: var(--accent); 
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .resume-section p { color: var(--text-muted); line-height: 1.7; font-size: 1rem; }
+
+        .resume-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 50px; }
+        
+        .skill-tag { 
+            background: rgba(99, 102, 241, 0.1); 
+            color: var(--accent);
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            display: inline-block;
+            margin: 0 8px 10px 0;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .contact-item { 
+            color: var(--text-muted); 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            font-size: 1rem;
+        }
+
+        .contact-emoji { font-size: 1.6rem; line-height: 1; }
+
+        .mobile-toggle {
+            position: fixed; top: 20px; right: 20px;
+            display: none; background: var(--accent); color: white;
+            border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer;
+            z-index: 110;
+        }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: none;
+            justify-content: center; align-items: center; z-index: 2000;
+            backdrop-filter: blur(8px); transition: all 0.3s ease; opacity: 0;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: #fff; width: 95%; height: 95%; max-width: 1300px;
+            border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header {
+            padding: 15px 25px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;
+            display: flex; justify-content: space-between; align-items: center; color: #1e293b;
+        }
+        .close-modal { background: #ef4444; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        iframe { width: 100%; flex: 1; border: none; }
+
+        @media (max-width: 900px) {
+            .sidebar { position: absolute; left: -280px; height: 100%; }
+            .sidebar.open { transform: translateX(280px); }
+            .mobile-toggle { display: block; }
+            .resume-header { flex-direction: column-reverse; text-align: center; }
+            .resume-grid { grid-template-columns: 1fr; }
+            .resume-container { padding: 30px; max-height: 85vh; }
+            .header-info h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><img src="banki3.jpg" alt="Logo"></div>
+            <div class="brand-text">
+                <h1>Dunaújvárosi Egyetem Bánki Donát Technikum</h1>
+                <span>Portfólió 2026</span>
+            </div>
+        </div>
+
+        <div class="nav-scroller">
+            <div class="nav-group">
+                <div class="nav-label">Személyes adatok</div>
+                <a class="nav-item" data-src="Munkavállalói Angol Portfólió.pdf">Angol CV</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-label">11. Évfolyam</div>
+                <a class="nav-item" data-src="Analóg Áramkörök Portfólió.pdf">Analóg Áramkörök</a>
+                <a class="nav-item" data-src="Elektronika Portfólió.pdf">Elektronika</a>
+                <a class="nav-item" data-src="Hálózat Portfólió.pdf">Hálózatkezelés</a>
+                <a class="nav-item" data-src="Programozás Alapjai Portfólió.pdf">Programozás Alapjai</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-label">12. Évfolyam</div>
+                <a class="nav-item" data-src="Adatbázis Portfólió.pdf">Adatbázis Kezelés</a>
+                <a class="nav-item" data-src="Mikrovezérlő Portfólió.pdf">Mikrovezérlő Programozás</a>
+                <a class="nav-item" data-src="PLC Portfólió.pdf">PLC Programozás</a>
+                <a class="nav-item" data-src="Számítógépes Szimuláció Portfólió.pdf">Számítógépes Szimuláció</a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-label">13. Évfolyam</div>
+                <a class="nav-item" data-src="Digitális Áramkörök Portfólió.pdf">Digitális Áramkörök</a>
+                <a class="nav-item" data-src="IoT Portfólió.pdf">IoT Rendszerek</a>
+                <a class="nav-item" data-src="Programfejlesztés Portfólió.pdf">Programfejlesztés</a>
+                <a class="nav-item" data-src="Robottechnika Portfólió.pdf">Robottechnika</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="resume-container">
+            <header class="resume-header">
+                <div class="header-info">
+                    <h2>Fekete Ádám</h2>
+                    <p>Műszaki Informatikus / Mechatronikai Technikus</p>
+                </div>
+                <div class="profile-pic">
+                    <img src="profil.png" alt="Profilkép">
+                </div>
+            </header>
+
+            <section class="resume-section">
+                <h3>Szakmai Profil</h3>
+                <p>Elhivatott ipari informatikai technikus jelölt vagyok. Érdeklődési körömbe tartozik a beágyazott rendszerek fejlesztése, az ipari automatizálás és a modern hálózati megoldások. Tanulmányaim során nagy hangsúlyt fektettem a gyakorlati megvalósításra és a precíz munkavégzésre.</p>
+            </section>
+
+            <div class="resume-grid">
+                <div class="left-col">
+                    <section class="resume-section">
+                        <h3>Tanulmányok</h3>
+                        <p><strong>Dunaújvárosi Szakképzési Centrum Bánki Donát Technikum</strong></p>
+                        <p style="font-size: 0.95rem;">Szakirány: Informatikai rendszer- és alkalmazás-üzemeltető technikus</p>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">2021 - 2026</p>
+                    </section>
+                </div>
+
+                <div class="right-col">
+                    <section class="resume-section">
+                        <h3>Készségek</h3>
+                        <div class="skill-list">
+                            <span class="skill-tag">C++</span>
+                            <span class="skill-tag">Cisco Networking</span>
+                            <span class="skill-tag">PLC (Siemens)</span>
+                            <span class="skill-tag">Windows Server</span>
+                        </div>
+                    </section>
+
+                    <section class="resume-section">
+                        <h3>Elérhetőség</h3>
+                        <div class="contact-item">
+                            <span class="contact-emoji">📧</span>
+                            <span>fekeadre@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-emoji">📍</span>
+                            <span>Dunaújváros, Magyarország</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong id="modalTitle">Dokumentum</strong>
+                <button class="close-modal" onclick="closeModal()">Bezárás</button>
+            </div>
+            <iframe id="pdfFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const modal = document.getElementById('modalOverlay');
+        const iframe = document.getElementById('pdfFrame');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function toggleSidebar() { sidebar.classList.toggle('open'); }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const src = this.getAttribute('data-src');
+                modalTitle.innerText = this.innerText;
+                iframe.src = src;
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('active'), 10);
+                if (window.innerWidth <= 900) sidebar.classList.remove('open');
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                iframe.src = "";
+            }, 300);
+        }
+
+        window.onclick = (e) => { if (e.target == modal) closeModal(); }
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeModal(); });
+    </script>
+</body>
+</html>
